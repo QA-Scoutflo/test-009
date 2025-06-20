@@ -1,0 +1,86 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: core-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: core-api
+  template:
+    metadata:
+      labels:
+        app: core-api
+    spec:
+      containers:
+      - name: core-api
+        image: &lt;DOCKER_REGISTRY_URI>/bi-api:&lt;BI_API_TAG>
+        ports:
+        - containerPort: 8000
+        imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: core-api
+spec:
+  type: NodePort
+  selector:
+    app: core-api
+  ports:
+    - name: port-9020
+      port: 8000
+      nodePort: 9020
+    - name: port-9021
+      port: 8000
+      nodePort: 9021
+    - name: port-9022
+      port: 8000
+      nodePort: 9022
+    - name: port-9023
+      port: 8000
+      nodePort: 9023
+    - name: port-9024
+      port: 8000
+      nodePort: 9024
+    - name: port-9025
+      port: 8000
+      nodePort: 9025
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crons-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: crons-api
+  template:
+    metadata:
+      labels:
+        app: crons-api
+    spec:
+      containers:
+      - name: crons-api
+        image: &lt;DOCKER_REGISTRY_URI>/bi-api:&lt;BI_CRONS_TAG>
+        ports:
+        - containerPort: 8000
+        imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: crons-api
+spec:
+  type: NodePort
+  selector:
+    app: crons-api
+  ports:
+    - name: port-8012
+      port: 8000
+      nodePort: 8012
+    - name: port-8013
+      port: 8000
+      nodePort: 8013
